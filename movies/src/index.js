@@ -12,6 +12,7 @@ import TrendingMoviesPage from "./pages/TrendingMoviesPage";
 
 import LatestMoviesPage from "./pages/LatestMoviesPage";
 
+import PopularMoviesPage  from "./pages/PopularMoviesPage";
 
 
 import MoviesContextProvider from "./contexts/moviesContext";
@@ -46,6 +47,8 @@ const App = () => {
           <Route path="/movies/:id" element={<MoviePage />} />
           <Route path="/movies/trending" element={<TrendingMoviesPage />} />
           <Route path="/movies/latest" element={<LatestMoviesPage />} />
+          <Route path="/movies/popular" element={<PopularMoviesPage />} />
+          
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={ <Navigate to="/" /> } />
         </Routes>
@@ -56,23 +59,6 @@ const App = () => {
   );
 };
 
-// const App = () => {
-//   return (
-    
-//     <BrowserRouter>
-//       <SiteHeader />
-//       <Routes>
-//         <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
-//         <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
-//         <Route path="/movies/upcoming" element={<UpcomingPage />} />
-        
-//         <Route path="/movies/:id" element={<MoviePage />} />
-//         <Route path="/" element={<HomePage />} />
-//         <Route path="*" element={ <Navigate to="/" /> } />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// };
 
 const rootElement = createRoot( document.getElementById("root") )
 rootElement.render(<App />);
