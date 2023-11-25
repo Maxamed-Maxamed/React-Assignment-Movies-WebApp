@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 
+
 import img from '../../images/pexels-dziana-hasanbekava-5480827.jpg'
 import { getPopularPeople } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
@@ -41,10 +42,6 @@ export default function FilterPeopleCard(props) {
 
   const handleTextChange = (e, props) => {
     handleChange(e, "name", e.target.value);
-  };
-
-  const handleGenreChange = (e) => {
-    handleChange(e, "people", e.target.value);
   };
 
   return (

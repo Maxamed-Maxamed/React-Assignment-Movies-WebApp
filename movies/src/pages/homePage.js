@@ -1,49 +1,55 @@
-
-import React from "react";
-import { getMovies } from "../api/tmdb-api";
-import PageTemplate from '../components/templateMovieListPage';
+import React, { useState } from "react";
 import { useQuery } from 'react-query';
 import Spinner from '../components/spinner';
-import AddToFavoritesIcon from '../components/cardIcons/addToFavorites'
+import AddToFavoritesIcon from '../components/cardIcons/addToFavorites';
+import Pagination from '@mui/material/Pagination'; // Import the Pagination component
+import PageTemplate from '../components/templateMovieListPage';
+import { getMovies } from "../api/tmdb-api";
+// Assuming getMovies is defined correctly to handle the page parameter
 
 
-const HomePage = (props) => {
+const HomePage = () => {
+  const [page, setPage] = useState(1); // Start with page 1
 
-  const {  data, error, isLoading, isError }  = useQuery('discover', getMovies)
+  const { data, error, isLoading, isError } = useQuery(['discover', page], () => getMovies(page), {
+    keepPreviousData: true,
+  });
 
   if (isLoading) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   if (isError) {
-    return <h1>{error.message}</h1>
-  }  
+    return <h1>{error.message}</h1>;
+  }
+
+  // Handle the page change action
+  const handlePageChange = (event, value) => {
+    setPage(value); // Set the new page number
+  };
 
  
-  const movies = data.results;
+    const totalPages = data.total_pages;
 
-  // Redundant, but necessary to avoid app crashing.
-  const favorites = movies.filter(m => m.favorite)
-  localStorage.setItem('favorites', JSON.stringify(favorites))
-  // const addToFavorites = (movieId) => true 
-  
-
-  // return (
-  //   <PageTemplate
-  //     title='Discover Movies'
-  //     movies={movies}
-  //     selectFavorite={addToFavorites}
-  //   />
-  // );
- 
   return (
-    <PageTemplate
-      title="Discover Movies"
-      movies={movies}
-      action={(movie) => {
-        return <AddToFavoritesIcon movie={movie} />
-      }}
-    />
-);
+    <>
+      <PageTemplate
+        title="Discover Movies"
+        movies={data.results}
+        action={(movie) => <AddToFavoritesIcon movie={movie} />}
+      />
+      {/* Pagination component with Material-UI */}
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={handlePageChange}
+        color="primary"
+        showFirstButton
+        showLastButton
+        style={{ paddingBottom: '20px', paddingTop: '20px', justifyContent: 'center', display: 'flex' }}
+      />
+    </>
+  );
 };
+
 export default HomePage;
